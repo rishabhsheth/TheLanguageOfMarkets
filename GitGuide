@@ -4,4 +4,3 @@ git add - adds new files to be tracked by Git
 git commit (-m "message here") - bundle changes under a commit with a message explaining the changes made
 git push - sends commits to cloud (Github) remote branch, making it accessible to others
 git branch - check all available 
-
