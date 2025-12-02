@@ -2,6 +2,7 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 # Define the path to your .pkl file
@@ -16,7 +17,7 @@ df = pd.read_pickle(file_path)
 # print(df.info)
 
 
-print(df.iloc[850]['transcript'])
+print(df.iloc[1212]['transcript'])
 
 def split_sections(text):
     text_lower = text.lower()
@@ -30,8 +31,8 @@ def split_sections(text):
     #     qa = ""
     return prepared, qa
 
-prepared, qa = split_sections(df.iloc[850]['transcript'])
+# prepared, qa = split_sections(df.iloc[850]['transcript'])
 
-print("1. Prepared: ", prepared)
+# print("1. Prepared: ", prepared)
 
-print("2. QA: ", qa)
+# print("2. QA: ", qa)
