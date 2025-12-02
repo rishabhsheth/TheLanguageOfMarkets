@@ -5,3 +5,6 @@ motley-fool-data.pkl*
 .DS_STORE
 
 .env
+
+temp.py
+
