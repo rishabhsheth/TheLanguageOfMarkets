@@ -1,0 +1,3 @@
+Take the pickle -> extract the text data -> get a score using finbert
+
+create a new dataframe with date, exchange, quarter, ticker, NLP score
