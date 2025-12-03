@@ -2,32 +2,37 @@ from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import pandas as pd
 from math import ceil
-from tqdm import tqdm  # for progress bar
+from tqdm import tqdm  # progress bar
 
-# Load FinBERT
+# --- Device selection ---
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+    print(f"Using device: {device} (NVIDIA GPU)")
+elif torch.backends.mps.is_available():
+    device = torch.device("mps")
+    print(f"Using device: {device} (Apple GPU via MPS)")
+else:
+    device = torch.device("cpu")
+    print(f"Using device: {device} (CPU)")
+
+# --- Load FinBERT ---
 model_name = "ProsusAI/finbert"
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModelForSequenceClassification.from_pretrained(model_name)
-
-# Move model to GPU
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print(f"Using device: {device}")
 model = model.to(device)
-model.eval()  # ensure evaluation mode
+model.eval()  # evaluation mode
 
-# Load your processed data
+# --- Load your data ---
 df = pd.read_pickle("data/processed_data")
+TEXT_COLUMNS = ["transcript", "prepared", "qa"]
 
-# Columns to score
-TEXT_COLUMNS = ["transcript", "preprared", "qa"]
+# --- Config ---
+BATCH_SIZE = 16  # adjust for GPU/CPU memory
 
-# ---- CONFIG ----
-BATCH_SIZE = 16  # adjust based on your GPU memory
-# ----------------
-
-# Labels for FinBERT
+# --- Labels ---
 labels = ["negative", "neutral", "positive"]
 
+# --- Batch inference function ---
 def batch_finbert(text_list):
     """Process a batch of texts and return labels and scores."""
     # Tokenize batch
@@ -39,10 +44,16 @@ def batch_finbert(text_list):
         max_length=512
     ).to(device)
 
-    with torch.no_grad():
-        logits = model(**inputs).logits
+    # Use autocast for Apple GPU (MPS) or NVIDIA if desired
+    if device.type in ["cuda", "mps"]:
+        with torch.cuda.amp.autocast() if device.type == "cuda" else torch.autocast(device):
+            with torch.no_grad():
+                logits = model(**inputs).logits
+    else:
+        with torch.no_grad():
+            logits = model(**inputs).logits
 
-    probs = torch.softmax(logits, dim=1).cpu()  # move back to CPU
+    probs = torch.softmax(logits, dim=1).cpu()
     max_idxs = torch.argmax(probs, dim=1)
 
     batch_labels = [labels[i] for i in max_idxs.tolist()]
@@ -50,7 +61,7 @@ def batch_finbert(text_list):
 
     return batch_labels, batch_scores
 
-# Process each column in batches
+# --- Process each column in batches ---
 for col in TEXT_COLUMNS:
     texts = df[col].fillna("").tolist()  # replace NaN with empty string
 
@@ -68,6 +79,6 @@ for col in TEXT_COLUMNS:
     df[f"{col}_finbert_label"] = all_labels
     df[f"{col}_finbert_score"] = all_scores
 
-# Save result
+# --- Save the results ---
 df.to_pickle("data/processed_with_finbert.pkl")
-print("Done! Added FinBERT sentiment columns (GPU-batched).")
+print("Done! Added FinBERT sentiment columns (GPU/CPU auto-selected).")
