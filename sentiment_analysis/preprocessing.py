@@ -45,5 +45,8 @@ print(df.head())
 problem_rows = df[(df["prepared"] == "") | (df["qa"] == "")]
 print(f"Number of rows with empty prepared & qa: {len(problem_rows)}")
 print(problem_rows.head())
+print(df.columns)
 
+df.to_pickle("data/processed_data")
 
+print("Done! Processed data and added prepared and qa columns.")
