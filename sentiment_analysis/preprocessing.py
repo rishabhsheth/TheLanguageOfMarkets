@@ -50,3 +50,11 @@ print(df.columns)
 df.to_pickle("data/processed_data")
 
 print("Done! Processed data and added prepared and qa columns.")
+
+
+# Now subset the dataframe to get only 25% of the rows for testing
+sampled_df = df.sample(frac=0.25, random_state=123)
+
+sampled_df.to_pickle("data/processed_data_sampled")
+
+print("Done! Created a sampled version of the processed data (25% of rows).")

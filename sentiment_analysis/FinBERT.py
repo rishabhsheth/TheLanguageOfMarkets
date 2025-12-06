@@ -27,7 +27,7 @@ df = pd.read_pickle("data/processed_data")
 TEXT_COLUMNS = ["transcript", "prepared", "qa"]
 
 # --- Config ---
-BATCH_SIZE = 16  # adjust for GPU/CPU memory
+BATCH_SIZE = 128  # adjust for GPU/CPU memory
 
 # --- Labels ---
 labels = ["negative", "neutral", "positive"]
