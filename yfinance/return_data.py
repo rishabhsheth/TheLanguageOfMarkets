@@ -65,7 +65,7 @@ for t in tqdm(tickers, desc="Downloading tickers"):
     if t in price_cache and isinstance(price_cache[t], pd.Series):
         continue
 
-    df = safe_download(t, start, end)
+    df = safe_download(t, start, end, max_retries=1)
 
     if isinstance(df, str) and df == "YFTzMissingError":
         price_cache[t] = pd.Series(dtype=float)
