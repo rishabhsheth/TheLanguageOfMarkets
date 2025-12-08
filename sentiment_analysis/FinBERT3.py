@@ -33,6 +33,10 @@ try:
        'adj_close_3d_after', 'adj_close_5d_after', 'ret_1d_after',
        'ret_3d_after', 'ret_5d_after', 'ret_1d_before', 'ret_3d_before',
        'ret_5d_before'], inplace=True)
+    
+    df = df[:5]
+
+    print(f"Data loaded with {len(df)} records after dropping NAs.")
 except FileNotFoundError:
     print("Error: Could not find 'data/processed_data_sampled_with_prices_ultimate.pkl'. Please ensure the file exists.")
     exit()
