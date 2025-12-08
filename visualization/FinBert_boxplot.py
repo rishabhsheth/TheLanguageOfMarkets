@@ -40,7 +40,6 @@ plt.ylabel("Return")
 plt.legend(title="Prepared Sentiment")
 plt.tight_layout()
 
-plt.savefig("visualization/FinBert_boxplot.png")
-
+plt.savefig("visualization/FinBERT_boxplot.png")
 
 plt.show()
