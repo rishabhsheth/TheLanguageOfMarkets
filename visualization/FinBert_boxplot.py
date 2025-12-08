@@ -1,45 +1,65 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 # --- LOAD DATA ---
 df = pd.read_pickle("data/processed_data_sampled_with_finbert_fast.pkl")
 
-# keep only valid labels
-valid_labels = ["positive", "negative", "neutral"]
-df_filtered = df[df["prepared_finbert_label"].isin(valid_labels)]
+# output directory
+os.makedirs("visualization/FinBERT", exist_ok=True)
 
-# melt the return columns
+# --- CONFIG ---
+sections = {
+    "transcript": "transcript_finbert_label",
+    "prepared": "prepared_finbert_label",
+    "qa": "qa_finbert_label"
+}
+
+valid_labels = ["positive", "negative", "neutral"]
+
 ret_cols = {
     "ret_1d_after": "1D After",
     "ret_3d_after": "3D After",
     "ret_5d_after": "5D After"
 }
 
-df_melt = df_filtered.melt(
-    id_vars=["prepared_finbert_label"],
-    value_vars=list(ret_cols.keys()),
-    var_name="horizon",
-    value_name="return"
-)
+# --- LOOP OVER SECTIONS ---
+for section_name, label_col in sections.items():
 
-# map cleaner names
-df_melt["horizon"] = df_melt["horizon"].map(ret_cols)
+    print(f"Generating boxplot for: {section_name}")
 
-plt.figure(figsize=(12, 6))
-sns.boxplot(
-    data=df_melt,
-    x="horizon",
-    y="return",
-    hue="prepared_finbert_label"
-)
+    # Filter valid rows
+    df_filtered = df[df[label_col].isin(valid_labels)]
 
-plt.title("Returns After Earnings Call — Grouped by FinBERT Label")
-plt.xlabel("Return Horizon")
-plt.ylabel("Return")
-plt.legend(title="Prepared Sentiment")
-plt.tight_layout()
+    # Melt returns
+    df_melt = df_filtered.melt(
+        id_vars=[label_col],
+        value_vars=list(ret_cols.keys()),
+        var_name="horizon",
+        value_name="return"
+    )
 
-plt.savefig("visualization/FinBERT_boxplot.png")
+    df_melt["horizon"] = df_melt["horizon"].map(ret_cols)
 
-plt.show()
+    # --- PLOT ---
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(
+        data=df_melt,
+        x="horizon",
+        y="return",
+        hue=label_col
+    )
+
+    plt.title(f"Returns After Earnings Call — Grouped by {section_name.capitalize()} Sentiment")
+    plt.xlabel("Return Horizon")
+    plt.ylabel("Return")
+    plt.legend(title=f"{section_name.capitalize()} Sentiment")
+    plt.tight_layout()
+
+    # save
+    save_path = f"visualization/FinBERT/FinBERT_boxplot_{section_name}.png"
+    plt.savefig(save_path)
+    plt.close()
+
+    print(f"Saved: {save_path}")
