@@ -1,7 +1,7 @@
 # The Language of Markets: Linking Executive Tone to Investor Behavior
 
 ## Overview
-This project investigates whether the sentiment expressed by company executives during quarterly earnings calls can predict short-term stock performance. By converting unstructured transcript text into quantitative sentiment metrics, we aim to determine whether market reactions in the 1- to 5-day window following an earnings call can be systematically explained—or even anticipated—using natural language processing (NLP) techniques.
+This project investigates whether the sentiment expressed by company executives during quarterly earnings calls can predict short-term stock performance. By converting unstructured transcript text into quantitative sentiment metrics, we aim to determine whether market reactions in the 1-, 3-, and 5-day window following an earnings call can be systematically explained—or even anticipated—using natural language processing (NLP) techniques.
 
 This work sits at the intersection of **financial analysis**, **text analytics**, and **machine learning**, combining statistical modeling and domain-adapted sentiment models to evaluate how tone and language influence investor behavior.
 
@@ -40,13 +40,14 @@ We use a dataset from Kaggle containing:
 
 - **18,755 earnings call transcripts**
 - Scraped from *The Motley Fool*
-- Distributed in `.plk` format
+- Distributed in `.pkl` format
 - Includes ticker information and earnings call dates
 
 ### Stock Price Data
 Daily adjusted closing prices are retrieved through **Yahoo Finance** via the `yfinance` API. Each transcript is matched by ticker and call date, allowing us to compute returns over:
 
 - **1-day post-call window**
+- **3-day post-call window**
 - **5-day post-call window**
 
 ---
@@ -55,10 +56,9 @@ Daily adjusted closing prices are retrieved through **Yahoo Finance** via the `y
 
 ### 1. Preprocessing
 - Load transcripts using Pandas  
-- Convert text to lowercase  
-- Remove punctuation and non-language artifacts  
-- Tokenization  
-- Stopword removal  
+- Clean data (remove non-US stock exchanges and rows with missing dates, as they can not be matched to yfinance data)
+- Split data into Prepared and Q&A sections (to compare performance across entire transcript, exclusively Prepared, and exclusively Q&A sections)
+- Sample the resulting data to reduce the number of rows for computational purposes
 
 ### 2. Sentiment Modeling
 We compute sentiment using:
@@ -66,7 +66,7 @@ We compute sentiment using:
 - **FinBERT** – BERT adapted for financial text  
 - **VADER** – Used as a baseline for comparison
 
-Each transcript receives sentiment scores reflecting executive tone.
+Each transcript receives sentiment scores reflecting tone.
 
 ### 3. Stock Return Computation
 Using stock price data:
@@ -75,7 +75,7 @@ Return = (Price_t+n – Price_t) / Price_t
 
 
 
-where *n* ∈ {1,5} trading days after the earnings call.
+where *n* ∈ {1,3,5} trading days after the earnings call.
 
 ### 4. Regression & Statistical Analysis
 We evaluate the relationship between market reaction and sentiment using:
@@ -101,9 +101,9 @@ We evaluate the relationship between market reaction and sentiment using:
 
 ## Implementation Plan
 1. Load and inspect transcript dataset  
-2. Clean and preprocess text  
-3. Compute sentiment with FinBERT and VADER  
-4. Pull price data from Yahoo Finance  
+2. Clean and preprocess text    
+3. Pull price data from Yahoo Finance  
+4. Compute sentiment with FinBERT and VADER
 5. Merge return data with sentiment features  
 6. Run regression and correlation analyses  
 7. Interpret results and evaluate predictive value
@@ -125,7 +125,6 @@ We evaluate the relationship between market reaction and sentiment using:
 ## Results (To Be Added)
 This section will present:
 
-- Regression tables  
 - Visualizations of sentiment vs. return  
 - Comparison between FinBERT and VADER performance  
 - Insights on financial interpretability  
@@ -140,4 +139,4 @@ The Journal of Finance, 66(1), 35–65.
 ---
 
 ## License
-This project is for academic and research purposes. Add specific licensing terms here as needed.
+This project is for academic and research purposes.
