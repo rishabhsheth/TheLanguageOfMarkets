@@ -14,6 +14,7 @@ plt.title('VADER Sentiment Score Distribution by Section')
 plt.xlabel('VADER Compound Score')
 plt.ylabel('Density')
 plt.legend()
+plt.savefig('visualization/VADER_kernel_density_estimator.png')
 plt.show()
 
 #2. Box Plot
@@ -44,4 +45,8 @@ for i, ret in enumerate(return_cols):
     plt.ylabel("VADER Score")
 
 plt.tight_layout()
+
+plt.savefig("visualization/VADER_boxplot_per_returns.png")
+
 plt.show()
+

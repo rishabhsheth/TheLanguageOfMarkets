@@ -39,4 +39,7 @@ plt.xlabel("Return Horizon")
 plt.ylabel("Return")
 plt.legend(title="Prepared Sentiment")
 plt.tight_layout()
+
+plt.savefig("visualization/VADER_boxplot.png")
+
 plt.show()
