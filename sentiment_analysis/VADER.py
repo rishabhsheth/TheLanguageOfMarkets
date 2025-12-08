@@ -3,7 +3,6 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from tqdm import tqdm
 import os
 
-# --- Load sampled data ---
 file_path = "data/processed_data_sampled_with_prices_ultimate.pkl"
 df = pd.read_pickle(file_path)
 
@@ -13,23 +12,24 @@ df.dropna(subset=['adj_close', 'adj_close_1d_before',
        'ret_3d_after', 'ret_5d_after', 'ret_1d_before', 'ret_3d_before',
        'ret_5d_before'], inplace=True)
 
-
-# --- Initialize VADER ---
 vader = SentimentIntensityAnalyzer()
 
-# --- Function to get compound score ---
-def vader_score(text):
+def vader_dominant(text):
     if not isinstance(text, str) or text.strip() == "":
-        return float('nan')
-    return vader.polarity_scores(text)['compound']
+        return pd.NA, pd.NA
+    scores = vader.polarity_scores(text)
+    label_scores = {k: v for k, v in scores.items() if k in ["pos", "neu", "neg"]}
+    dominant_label = max(label_scores, key=label_scores.get)
+    dominant_score = label_scores[dominant_label]
+    return dominant_label, dominant_score
 
-# --- Apply VADER with progress bar ---
 for col in ['transcript', 'prepared', 'qa']:
     print(f"Processing {col}...")
     tqdm.pandas(desc=f"Scoring {col}")
-    df[f'{col}_score'] = df[col].progress_apply(vader_score)
+    df[[f'{col}_vader_label', f'{col}_vader_score']] = df[col].progress_apply(
+        lambda x: pd.Series(vader_dominant(x))
+    )
 
-# --- Save processed dataframe ---
 os.makedirs("data", exist_ok=True)
 df.to_pickle("data/processed_data_sampled_with_vader_fast.pkl")
-print("Done! VADER sentiment scores added for all columns.")
+print("Done! VADER labels and scores added for all columns.")
