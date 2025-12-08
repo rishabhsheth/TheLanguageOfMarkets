@@ -1,9 +1,13 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
 
 # --- LOAD DATA ---
 df = pd.read_pickle("data/processed_data_sampled_with_vader_fast.pkl")
+
+# output directory
+os.makedirs("visualization/VADER", exist_ok=True)
 
 plt.figure(figsize=(10, 6))
 
@@ -20,6 +24,6 @@ plt.xlabel("VADER Sentiment Score (Q&A)")
 plt.ylabel("1-Day Return")
 plt.tight_layout()
 
-plt.savefig("visualization/VADER_scatterplot.png")
+plt.savefig("visualization/VADER/VADER_scatterplot.png")
 
 plt.show()

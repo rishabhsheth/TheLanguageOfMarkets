@@ -1,9 +1,13 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
 
 # --- LOAD DATA ---
 df = pd.read_pickle("data/processed_data_sampled_with_finbert_fast.pkl")
+
+# output directory
+os.makedirs("visualization/FinBERT", exist_ok=True)
 
 plt.figure(figsize=(10, 6))
 
@@ -20,6 +24,6 @@ plt.xlabel("FinBERT Sentiment Score (Prepared)")
 plt.ylabel("1-Day Return")
 plt.tight_layout()
 
-plt.savefig("visualization/FinBERT_scatterplot.png")
+plt.savefig("visualization/FinBERT/FinBERT_scatterplot.png")
 
 plt.show()

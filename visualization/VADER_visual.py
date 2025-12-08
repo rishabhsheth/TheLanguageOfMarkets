@@ -3,8 +3,12 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import os
 
 df = pd.read_pickle("data/processed_data_sampled_with_vader_fast.pkl")
+
+# output directory
+os.makedirs("visualization/VADER", exist_ok=True)
 
 plt.figure(figsize=(10,6))
 sns.kdeplot(df['transcript_vader_score'].dropna(), label='Transcript', fill=True, alpha=0.3)
@@ -14,7 +18,7 @@ plt.title('VADER Sentiment Score Distribution by Section')
 plt.xlabel('VADER Compound Score')
 plt.ylabel('Density')
 plt.legend()
-plt.savefig('visualization/VADER_kernel_density_estimator.png')
+plt.savefig('visualization/VADER/VADER_kernel_density_estimator.png')
 plt.show()
 
 #2. Box Plot
@@ -46,7 +50,7 @@ for i, ret in enumerate(return_cols):
 
 plt.tight_layout()
 
-plt.savefig("visualization/VADER_boxplot_per_returns.png")
+plt.savefig("visualization/VADER/VADER_boxplot_per_returns.png")
 
 plt.show()
 
