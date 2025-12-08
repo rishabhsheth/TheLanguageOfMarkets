@@ -228,6 +228,6 @@ for col in TEXT_COLUMNS:
 
 # --- SAVE RESULTS ---
 df.to_pickle("data/processed_data_sampled_with_finbert_fast.pkl")
-print("\n🔥 DONE — full FinBERT sentiment analysis with chunking complete.")
-print("🚀 GPU optimized with batching on all chunks")
-print("📦 Chunked data auto-loaded next time")
+print("\n DONE — full FinBERT sentiment analysis with chunking complete.")
+print(" GPU optimized with batching on all chunks")
+print(" Chunked data auto-loaded next time")

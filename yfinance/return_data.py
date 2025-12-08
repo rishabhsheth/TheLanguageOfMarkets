@@ -192,6 +192,6 @@ merged = sampled_df.merge(prices_df, left_index=True, right_index=True, how="lef
 merged.to_pickle("data/processed_data_sampled_with_prices_ultimate.pkl")
 merged.to_csv("data/processed_data_sampled_with_prices_ultimate.csv", index=False)
 
-print("\n✅ Finished: Ultimate price dataset created.")
-print("📌 Cached tickers saved to:", CACHE_FILE)
-print("⚠️ Failed tickers saved to:", FAILED_TICKERS_FILE)
+print(" Finished: Ultimate price dataset created.")
+print(" Cached tickers saved to:", CACHE_FILE)
+print(" Failed tickers saved to:", FAILED_TICKERS_FILE)
