@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # -------------------------------------------------------------
-# 1. Load Raw Data
+# 1. Load Raw Data - used PICKLE file because of the way original data was put together
 # -------------------------------------------------------------
 file_path = os.getenv("PICKLE_PATH")
 df = pd.read_pickle(file_path)
@@ -19,7 +19,7 @@ print(df.head())
 
 # -------------------------------------------------------------
 # 2. Remove rows with foreign stock exchanges
-#    (keeping only NYSE, NASDAQ, AMEX)
+#    (keeping only NYSE, NASDAQ, AMEX) - something we realized through yfinance because of OTC markets OR 
 # -------------------------------------------------------------
 US_EXCHANGES = {"NYSE", "NASDAQ", "AMEX"}
 
@@ -30,14 +30,14 @@ if "exchange" in df.columns:
 print(f"Data shape after filtering exchanges: {df.shape}")
 
 # -------------------------------------------------------------
-# 3. Remove rows with missing date entirely
+# 3. Remove rows with missing date entirely - be able to get the data from yfinance
 # -------------------------------------------------------------
 df = df[df["date"].notna()]
 
 print(f"Data shape after removing missing dates: {df.shape}")
 
 # -------------------------------------------------------------
-# 4. Date cleaning + parsing
+# 4. Date cleaning + parsing - yfinance (yyyy-mm-dd format)
 # -------------------------------------------------------------
 def clean_and_parse_date(value):
     """Attempts to extract and parse a valid timestamp from messy date formats."""

@@ -1,6 +1,0 @@
-Take the pickle -> extract the text data -> get a score using finbert
-
-create a new dataframe with date, exchange, quarter, ticker, NLP score
-
-
-load pickle -> create prepared and qa columns (preprocessing) -> FinBERT/VADER processing (interchangeable order, add 3 columns  to dataframe each)
