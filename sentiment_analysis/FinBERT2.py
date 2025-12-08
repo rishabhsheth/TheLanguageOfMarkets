@@ -27,9 +27,9 @@ BATCH_SIZE = 256
 # --- LOAD DATA ---
 # Ensure this path is correct
 try:
-    df = pd.read_pickle("data/processed_data")
+    df = pd.read_pickle("data/processed_data_sampled_with_prices_ultimate.pkl")
 except FileNotFoundError:
-    print("Error: Could not find 'data/processed_data'. Please ensure the file exists.")
+    print("Error: Could not find 'data/processed_data_sampled_with_prices_ultimate.pkl'. Please ensure the file exists.")
     exit()
 
 TEXT_COLUMNS = ["transcript", "prepared", "qa"]
@@ -222,7 +222,7 @@ for col in TEXT_COLUMNS:
     df[f"{col}_finbert_score"] = scores
 
 # --- SAVE RESULTS ---
-df.to_pickle("data/processed_with_finbert_chunked.pkl")
+df.to_pickle("data/processed_data_sampled_with_finbert_fast.pkl")
 print("\n🔥 DONE — full FinBERT sentiment analysis with chunking complete.")
 print("🚀 GPU optimized with batching on all chunks")
 print("📦 Chunked data auto-loaded next time")
