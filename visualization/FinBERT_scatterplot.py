@@ -3,10 +3,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import os
 
-# --- LOAD DATA ---
 df = pd.read_pickle("data/processed_data_sampled_with_finbert_fast.pkl")
 
-# output directory
 os.makedirs("visualization/FinBERT", exist_ok=True)
 
 plt.figure(figsize=(10, 6))

@@ -3,13 +3,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
-# --- LOAD DATA ---
 df = pd.read_pickle("data/processed_data_sampled_with_finbert_fast.pkl")
 
-# output directory
 os.makedirs("visualization/FinBERT", exist_ok=True)
 
-# --- CONFIG ---
 sections = {
     "transcript": "transcript_finbert_label",
     "prepared": "prepared_finbert_label",
@@ -27,15 +24,12 @@ ret_cols = {
     "ret_5d_after": "5D After"
 }
 
-# --- LOOP OVER SECTIONS ---
 for section_name, label_col in sections.items():
 
     print(f"Generating boxplot for: {section_name}")
 
-    # Filter valid rows
     df_filtered = df[df[label_col].isin(valid_labels)]
 
-    # Melt returns
     df_melt = df_filtered.melt(
         id_vars=[label_col],
         value_vars=list(ret_cols.keys()),
@@ -45,7 +39,6 @@ for section_name, label_col in sections.items():
 
     df_melt["horizon"] = df_melt["horizon"].map(ret_cols)
 
-    # --- PLOT ---
     plt.figure(figsize=(12, 6))
     sns.boxplot(
         data=df_melt,
@@ -60,7 +53,6 @@ for section_name, label_col in sections.items():
     plt.legend(title=f"{section_name.capitalize()} Sentiment")
     plt.tight_layout()
 
-    # save
     save_path = f"visualization/FinBERT/FinBERT_boxplot_{section_name}.png"
     plt.savefig(save_path)
     plt.close()

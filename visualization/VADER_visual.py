@@ -7,7 +7,6 @@ import os
 
 df = pd.read_pickle("data/processed_data_sampled_with_vader_fast.pkl")
 
-# output directory
 os.makedirs("visualization/VADER", exist_ok=True)
 
 plt.figure(figsize=(10,6))
@@ -37,7 +36,6 @@ titles = ['1-Day After', '3-Day After', '5-Day After']
 plt.figure(figsize=(18,6))
 
 for i, ret in enumerate(return_cols):
-    # melt for each subplot
     tmp = df[sections]
     tmp = tmp.melt(var_name='section', value_name='score')
     
