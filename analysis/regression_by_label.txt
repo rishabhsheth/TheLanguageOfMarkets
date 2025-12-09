@@ -1,0 +1,17 @@
+=== Regression by Sentiment Label ===
+
+positive:
+  Intercept: -0.00673, Slope: 0.01198
+  R-squared: 0.0004
+  t-statistic: 0.7834, p-value: 0.4335
+
+negative:
+  Intercept: -0.02410, Slope: 0.04802
+  R-squared: 0.0033
+  t-statistic: 2.6676, p-value: 0.0077
+
+neutral:
+  Intercept: 0.00045, Slope: 0.01528
+  R-squared: 0.0113
+  t-statistic: 0.2623, p-value: 0.8019
+
