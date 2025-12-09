@@ -19,6 +19,9 @@ sections = {
 valid_labels = ["positive", "negative", "neutral"]
 
 ret_cols = {
+    "ret_5d_before": "5D Before",
+    "ret_3d_before": "3D Before",
+    "ret_1d_before": "1D Before",
     "ret_1d_after": "1D After",
     "ret_3d_after": "3D After",
     "ret_5d_after": "5D After"
