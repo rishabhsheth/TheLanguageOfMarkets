@@ -1,7 +1,7 @@
 # The Language of Markets: Linking Executive Tone to Investor Behavior
 
 ## Overview
-This project investigates whether the sentiment expressed by company executives during quarterly earnings calls can predict short-term stock performance. By converting unstructured transcript text into quantitative sentiment metrics, we aim to determine whether market reactions in the 1-, 3-, and 5-day window following an earnings call can be systematically explained—or even anticipated—using natural language processing (NLP) techniques.
+This project investigates whether the sentiment expressed by company executives during quarterly earnings calls can predict short-term stock performance. By converting unstructured transcript text into quantitative sentiment metrics, we aim to determine whether market reactions in the 1-, 3-, and 5-day window following an earnings call can be systematically explained, or even anticipated, using natural language processing (NLP) techniques.
 
 This work sits at the intersection of **financial analysis**, **text analytics**, and **machine learning**, combining statistical modeling and domain-adapted sentiment models to evaluate how tone and language influence investor behavior.
 
@@ -14,7 +14,7 @@ This work sits at the intersection of **financial analysis**, **text analytics**
 ---
 
 ## Motivation
-Investors traditionally rely on financial statements to assess company performance, but quantitative metrics alone often overlook the nuances of human communication. Earnings calls provide rich qualitative insight, including tone, confidence, and sentiment directly from company leadership—signals that can shape investor expectations and drive short-term price action.
+Investors traditionally rely on financial statements to assess company performance, but quantitative metrics alone often overlook the nuances of human communication. Earnings calls provide rich qualitative insight, including tone, confidence, and sentiment directly from company leadership. These are serve as potential signals that can shape investor expectations and drive short-term price action.
 
 Our central research question:
 
@@ -138,7 +138,7 @@ We first analyzed how returns vary across positive, neutral, and negative sentim
 ![VADER Transcript Boxplot with stock returns from 1-,3-, and 5-Days before and after](visualization/VADER/VADER_boxplot_qa.png)
 *All plots had the same distribution with VADER*
 
-These results suggest that sentiment classification—regardless of model—does not correspond to distinguishable differences in short-term price movements.
+These results suggest that sentiment classification, regardless of model, does not correspond to distinguishable differences in short-term price movements.
 
 ---
 
