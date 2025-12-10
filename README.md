@@ -77,13 +77,18 @@ Return = (Price_t+n – Price_t) / Price_t
 
 where *n* ∈ {1,3,5} trading days after the earnings call.
 
-### 4. Regression & Statistical Analysis
-We evaluate the relationship between market reaction and sentiment using:
+### 4. Visualizations
+We created boxplots to depict the distribution of returns by:
 
-- **Ordinary Least Squares (OLS) regression**
-- Potential controls (e.g., earnings surprise, other fundamentals)
+- Sentiment label
+- Days following earnings call for each model
 
-### 5. Evaluation Criteria
+We created scatterplots to depict the relationship between sentiment score, stock returns, and sentiment label
+
+### 5. Regression & Statistical Analysis
+We evaluate the relationship between market reaction and sentiment using Ordinary Least Squares (OLS) regression
+
+### 6. Evaluation Criteria
 
 #### Statistical
 - Significance of regression coefficients  
@@ -92,7 +97,6 @@ We evaluate the relationship between market reaction and sentiment using:
 
 #### Predictive
 - Whether sentiment provides explanatory power beyond traditional financial metrics  
-- Sensibility of effect directions  
 
 #### Financial relevance
 - Whether results meaningfully improve investment decision-making on recent calls
@@ -110,24 +114,115 @@ We evaluate the relationship between market reaction and sentiment using:
 
 ---
 
-## Tools & Dependencies
-- **Python 3.x**  
-- `pandas`  
-- `numpy`  
-- `scikit-learn`  
-- `nltk`  
-- `yfinance`  
-- `transformers` (for FinBERT)  
-- `statsmodels` (for OLS regression)
+## Results
+
+Our experiments combined sentiment modeling, exploratory data analysis, and regression techniques to evaluate whether earnings call sentiment predicts short-term stock performance. Using both **FinBERT** and **VADER**, we examined sentiment labels, continuous sentiment scores, and their relationships to 1-, 3-, and 5-day returns. The results are visualized through boxplots, scatterplots, and regression diagnostics.
+
+### 1. Sentiment vs. Stock Return Distributions
+
+We first analyzed how returns vary across positive, neutral, and negative sentiment labels. Boxplots for each model and each return window revealed a consistent pattern:
+
+- The distributions of returns across sentiment categories **overlap almost entirely**.  
+- No sentiment label (positive, negative, neutral) exhibits meaningfully different median or spread in returns.  
+- This pattern holds across **1-day**, **3-day**, and **5-day** return windows, and across both **FinBERT** and **VADER**.
+
+![FinBERT Full Transcript Boxplot with stock returns from 1-,3-, and 5-Days before and after](visualization/FinBERT/FinBERT_boxplot_transcript.png)
+*Full Transcript with FinBERT*
+
+![FinBERT Prepared Transcript Boxplot with stock returns from 1-,3-, and 5-Days before and after](visualization/FinBERT/FinBERT_boxplot_prepared.png)
+*Prepared Transcript (First part of full transcript) with FinBERT*
+
+![FinBERT QA Transcript Boxplot with stock returns from 1-,3-, and 5-Days before and after](visualization/FinBERT/FinBERT_boxplot_qa.png)
+*QA Transcript (Second part of full transcript) with FinBERT*
+
+![VADER Transcript Boxplot with stock returns from 1-,3-, and 5-Days before and after](visualization/VADER/VADER_boxplot_qa.png)
+*All plots had the same distribution with VADER*
+
+These results suggest that sentiment classification—regardless of model—does not correspond to distinguishable differences in short-term price movements.
 
 ---
 
-## Results (To Be Added)
-This section will present:
+### 2. Scatterplots: Sentiment Score vs. 1-Day Returns
 
-- Visualizations of sentiment vs. return  
-- Comparison between FinBERT and VADER performance  
-- Insights on financial interpretability  
+We next evaluated whether continuous sentiment scores provided stronger predictive value. Scatterplots grouped by sentiment label show:
+
+- Points form a dense, unstructured cluster with no clear positive or negative trend.  
+- Regression lines across all sentiment labels have **slopes extremely close to zero**.  
+- R² values are effectively **0**, indicating no explanatory power.
+
+![FinBERT Sentiment Label vs 1-Day Return](visualization/FinBERT/FinBERT_scatterplot.png)
+
+![VADER Sentiment Label vs 1-Day Return](visualization/VADER/VADER_scatterplot.png)
+
+
+This confirms that the **magnitude** of sentiment, not just its label, is not related to next-day returns.
+
+---
+
+### 3. FinBERT vs. VADER Performance
+
+Although neither model predicts returns, their sentiment classification quality differs significantly:
+
+#### FinBERT
+- Produces sentiment labels aligned with financial terminology.  
+- Interprets risk disclosures, guidance language, and operational commentary more accurately.  
+- Shows clearer separation between positive, neutral, and negative sentiment.
+
+#### VADER
+- Misinterprets many financial terms and phrases.  
+- Assigns polarity to neutral statements.  
+
+Overall, **FinBERT is the superior sentiment model for financial text**, but superior sentiment analysis alone does not translate into predictive market power.
+
+---
+
+### 4. Regression and Statistical Analysis
+
+We used Ordinary Least Squares (OLS) regression to formally test whether sentiment explains variation in short-term stock returns. Separate regressions were run for each sentiment label (positive, negative, neutral) using FinBERT sentiment scores.
+
+The results are shown below:
+
+#### **Regression by Sentiment Label**
+
+**Positive**
+- Intercept: **–0.00673**  
+- Slope: **0.01198**  
+- R²: **0.0004**  
+- t-statistic: **0.7834**  
+- p-value: **0.4335**
+
+**Negative**
+- Intercept: **–0.02410**  
+- Slope: **0.04802**  
+- R²: **0.0033**  
+- t-statistic: **2.6676**  
+- p-value: **0.0077**
+
+**Neutral**
+- Intercept: **0.00045**  
+- Slope: **0.01528**  
+- R²: **0.0113**  
+- t-statistic: **0.2623**  
+- p-value: **0.8019**
+
+---
+
+### Interpretation
+
+Across all sentiment categories:
+
+- The **R² values are extremely low** (all below 0.012), indicating that sentiment explains **almost none** of the variation in stock returns.  
+- Slopes are **close to zero**, showing no meaningful directional relationship.  
+- The **only statistically significant coefficient** is the slope for the negative category (*p = 0.0077*), but the effect size is extremely small and the model still has **near-zero explanatory power**.  
+
+Taken together, these results confirm that:
+
+> **Earnings call sentiment shows no meaningful or actionable relationship with short-term stock performance.**
+
+Even where statistical significance appears, the economic significance is negligible.
+
+
+
 
 ---
 
