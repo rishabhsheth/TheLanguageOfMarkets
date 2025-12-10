@@ -123,7 +123,7 @@ Our experiments combined sentiment modeling, exploratory data analysis, and regr
 We first analyzed how returns vary across positive, neutral, and negative sentiment labels. Boxplots for each model and each return window revealed a consistent pattern:
 
 - The distributions of returns across sentiment categories **overlap almost entirely**.  
-- No sentiment label (positive, negative, neutral) exhibits meaningfully different median or spread in returns.  
+- No sentiment label (positive, negative, neutral) shows meaningful differences in the median or spread of returns; observed differences in some boxplots are primarily due to labels with very few records. 
 - This pattern holds across **1-day**, **3-day**, and **5-day** return windows, and across both **FinBERT** and **VADER**.
 
 ![FinBERT Full Transcript Boxplot with stock returns from 1-,3-, and 5-Days before and after](visualization/FinBERT/FinBERT_boxplot_transcript.png)
@@ -146,8 +146,8 @@ These results suggest that sentiment classification—regardless of model—does
 
 We next evaluated whether continuous sentiment scores provided stronger predictive value. Scatterplots grouped by sentiment label show:
 
-- Points form a dense, unstructured cluster with no clear positive or negative trend.  
-- Regression lines across all sentiment labels have **slopes extremely close to zero**.  
+- Points form a dense, overlapping, and unstructured cluster with no clear positive or negative trend.  
+- Regression lines across all sentiment labels have **slopes and y-intercepts extremely close to zero**.  
 - R² values are effectively **0**, indicating no explanatory power.
 
 ![FinBERT Sentiment Label vs 1-Day Return](visualization/FinBERT/FinBERT_scatterplot.png)
@@ -235,3 +235,32 @@ The Journal of Finance, 66(1), 35–65.
 
 ## License
 This project is for academic and research purposes.
+
+## Run
+
+1. Install all python packages using:
+```
+pip install -r requirements.txt
+```
+
+2. Set up a .env file with PICKLE_PATH environment variable, the path to you data
+
+3. Create a folder called 'data'
+   
+4. From the project root directory, run each of the following in you terminal (may take multiple hours depending on hardware):
+```
+python sentiment_analysis/preprocessing.py
+```
+```
+python yfinance/return_data.py
+```
+```
+python sentiment_analysis/FinBERT2.py
+```
+```
+python sentiment_analysis/VADER.py
+```
+
+5. Run any python file in analysis or visualization folders to generate described text/visuals
+
+You can find the resulting data from this process in the Rutgers Box links shared on the Final Report.
